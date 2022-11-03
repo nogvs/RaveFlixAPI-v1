@@ -22,7 +22,7 @@ namespace RaveFlixAPI.Controllers
         }
 
         [HttpGet]
-        [Route("festivals/{id:int}")]
+        [Route("festivals/id/{id:int}")]
         public async Task<ActionResult> GetByIdAsync(
             [FromServices] DataContext context,
             [FromRoute] int id)
@@ -32,6 +32,34 @@ namespace RaveFlixAPI.Controllers
                 .FirstOrDefaultAsync(f => f.Id == id);
 
             return festival == null ? NotFound("Canal não encontrado.") : Ok(festival);
+        }
+
+        [HttpGet]
+        [Route("festivals/name/{name}")]
+        public async Task<ActionResult> GetByNameAsync(
+          [FromServices] DataContext context,
+          [FromRoute] string name)
+        {
+            var festival = await context
+                .Festivals
+                .FirstOrDefaultAsync(f => f.Name == name);
+
+            return festival == null ? NotFound("Canal não encontrado.") : Ok(festival);
+        }
+
+        [HttpGet]
+        [Route("festivals/country/{country}")]
+        public async Task<ActionResult> GetByCountryAsync(
+          [FromServices] DataContext context,
+          [FromRoute] string country)
+        {
+            var festivals = await context
+                .Festivals
+                .Where(f => f.Country == country)
+                .OrderBy( f => f.Name)
+                .ToListAsync(); 
+
+            return festivals == null ? NotFound("Canal não encontrado.") : Ok(festivals);
         }
 
         [HttpPost]
@@ -64,7 +92,7 @@ namespace RaveFlixAPI.Controllers
         }
 
         [HttpPut]
-        [Route("festivals/{id:int}")]
+        [Route("festivals/id/{id:int}")]
         public async Task<ActionResult> PutAsync(
            [FromServices] DataContext context,
            [FromBody] CreateFestivalViewModel model,
@@ -102,7 +130,7 @@ namespace RaveFlixAPI.Controllers
         }
 
         [HttpDelete]
-        [Route("festivals/{id:int}")]
+        [Route("festivals/id/{id:int}")]
         public async Task<ActionResult> DeleteAsync(
            [FromServices] DataContext context,
            [FromRoute] int id)

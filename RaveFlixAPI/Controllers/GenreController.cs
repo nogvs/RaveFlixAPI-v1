@@ -22,7 +22,7 @@ namespace RaveFlixAPI.Controllers
         }
 
         [HttpGet]
-        [Route("genres/{id:int}")]
+        [Route("genres/id/{id:int}")]
         public async Task<ActionResult> GetByIdAsync(
             [FromServices] DataContext context,
             [FromRoute] int id)
@@ -32,6 +32,19 @@ namespace RaveFlixAPI.Controllers
                 .FirstOrDefaultAsync(g => g.Id == id);
 
             return genre == null ? NotFound("Gênero não encontrado.") : Ok(genre);
+        }
+
+        [HttpGet]
+        [Route("genres/name/{name}")]
+        public async Task<ActionResult> GetByNameAsync(
+        [FromServices] DataContext context,
+        [FromRoute] string name)
+        {
+            var genres = await context
+                .Genres
+                .FirstOrDefaultAsync(g => g.Name == name);
+
+            return genres == null ? NotFound("Canal não encontrado.") : Ok(genres);
         }
 
         [HttpPost]

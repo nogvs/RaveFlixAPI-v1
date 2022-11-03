@@ -11,7 +11,7 @@ using RaveFlixAPI.Data;
 namespace RaveFlixAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221102231354_InitialCreate")]
+    [Migration("20221103230106_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
